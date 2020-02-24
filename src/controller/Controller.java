@@ -51,7 +51,7 @@ public class Controller <T extends Comparable<T>>{
 				    System.out.println("El último comparendo es: ObjectId: " + ultimo.darId() + ", Fecha: " + ultimo.darFecha()
 						+ ", Infracción: "+ ultimo.darInfraccion()+ ", Clase Vehículo: " + ultimo.darClaseVehi() + ", Tipo servicio: " + ultimo.darTipo()
 						+ ", Localidad: " + ultimo.darLocalidad());
-				    view.printMessage("Numero actual de elementos " + modelo.darTamano()+ "\n---------");						
+				    view.printMessage("Numero actual de elementos " + lista.darLongitud()+ "\n---------");						
 					break;
 
 				case 2:

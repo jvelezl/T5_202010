@@ -23,7 +23,6 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 		Node<T> actual2=primero;
 		while(actual2.darSiguiente()==null)
 		{
-			longitud++;
 			ultimo=actual2;
 			actual2=actual2.darSiguiente();
 		}
