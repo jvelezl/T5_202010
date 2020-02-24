@@ -18,6 +18,18 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 	{
 		return primero;
 	}
+	public Node<T> darUltimo()
+	{
+		Node<T> actual2=primero;
+		while(actual2.darSiguiente()==null)
+		{
+			longitud++;
+			ultimo=actual2;
+			actual2=actual2.darSiguiente();
+		}
+		return ultimo;
+		
+	}
 	@Override
 	public boolean agregar(T elemento) {
 		Node<T> aAgregar= new Node<T>(elemento);
@@ -101,6 +113,7 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 		return actual;
 		
 		// TODO Auto-generated method stub
+	
 
 	}
 

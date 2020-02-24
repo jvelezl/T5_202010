@@ -35,7 +35,7 @@ public class Modelo {
 	{
 		datos = new ListaEncadenada<Comparendos>();
 	}
-public IListaEncadenada<Comparendos> cargarDatos() {
+public ListaEncadenada<Comparendos> cargarDatos() {
 		
 	// Solucion de carga de datos publicada al curso Estructuras de Datos 2020-10
 		ListaEncadenada<Comparendos> datos = new ListaEncadenada<Comparendos>();
@@ -126,17 +126,9 @@ public IListaEncadenada<Comparendos> cargarDatos() {
 		return aBuscar;
 		
 	}
-	public Comparendos darUltimo()
-	{
-		Iterator<Comparendos> c= datos.iterator();
-		Comparendos comp=null;
-		while(c.hasNext() ){
-			comp=c.next();	
-		}
-		return comp;
-	}
+
 	public ListaEncadenada<Comparendos> darLista(){
-		return (ListaEncadenada<Comparendos>) datos;
+		return datos;
 	}
 	
 	/**

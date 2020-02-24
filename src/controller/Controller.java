@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 
 import model.data_structures.Comparendos;
+import model.data_structures.ListaEncadenada;
 import model.data_structures.Node;
 import model.logic.Modelo;
 import view.View;
@@ -40,9 +41,9 @@ public class Controller <T extends Comparable<T>>{
 			switch(option){
 				case 1:
 					view.printMessage("--------- \nCargar Lista: "); 
-					modelo.cargarDatos();
-					Comparendos primero=modelo.darLista().darPrimero().darElemento();
-					Comparendos ultimo=modelo.darUltimo();
+					ListaEncadenada<Comparendos> lista=modelo.cargarDatos();
+					Comparendos primero=lista.darPrimero().darElemento();
+					Comparendos ultimo=lista.darUltimo().darElemento();
 				    view.printMessage("Lista Cargada");
 				    System.out.println("El primer comparendo es: ObjectId: " + primero.darId() +", Fecha: " + primero.darFecha()
 						+ ", Infracción: "+ primero.darInfraccion()+ ", Clase Vehículo: " + primero.darClaseVehi() + ", Tipo servicio: " + primero.darTipo()

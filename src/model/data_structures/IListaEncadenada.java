@@ -9,3 +9,4 @@ public interface IListaEncadenada <T extends Comparable<T>> extends Iterable<T>{
 	public Node<T> avanzarNodo(Node<T> a);
 	public Node<T> retrocederNodo(Node<T> a);
 }
+
