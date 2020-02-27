@@ -139,31 +139,66 @@ public class Comparendos implements Comparable<Comparendos> {
 
 	//Requerimiento 3
 
-	private static void merge (Comparable[] a, Comparable[] aux, int lo, int mid, int hi)
+	private static void merge (Comparable[] datos, Comparable[] aux, int lo, int mid, int hi)
 	{
+		datos = crearArregloDeObjetos();
 		for ( int k = lo; k <= hi; k ++)
 		{
-			aux[k] = a[k];
+			aux[k] = datos[k];
 		}
 
 		int i = lo, j = mid+i;
 		for (int k = lo; k <= hi; k++) 
 		{
-			if (i > mid )  a[k] = aux [j++];
-			else if (j > hi) a[k] = aux[i++];
-			else if (less(aux[j], aux[i])) a[k]= aux[j++];
-			else a[k] = aux [j++];
+			if (i > mid )  datos[k] = aux [j++];
+			else if (j > hi) datos[k] = aux[i++];
+			else if (less(aux[j], aux[i])) datos[k]= aux[j++];
+			else datos[k] = aux [j++];
 
 		}
 	}
 	
-	private static void sort ( Comparable[] a, Comparable[] aux, int lo, int hi)
+	private static void sort ( Comparable[] datos, Comparable[] aux, int lo, int hi)
 	{
 		if ( hi <= lo ) return;
 		int mid = lo + (hi - lo)/2;
-		sort(a, aux, lo, mid);
-		sort(a, aux, mid+1, hi);
-		merge(a, aux, lo, mid, hi);
+		sort(datos, aux, lo, mid);
+		sort(datos, aux, mid+1, hi);
+		merge(datos, aux, lo, mid, hi);
+	}
+
+	//Requerimiento 4
+	
+	private static int partition (Comparable[] a, int lo, int hi)
+	{
+		int i = lo, j = hi +1;
+		while(true)
+		{
+			while(less(a[++i], a[lo]))
+			{
+				if(i== hi) break;
+				
+			}
+			
+			while(less(a[lo], a[--j]))
+			{
+				if (j== lo)break;
+			}
+			
+			if(i>= j) break;
+			exch(a, i, j);
+		}
+		exch(a, lo, j);
+		return j;
+	}
+	
+	
+	public static void sort(Comparable[]a, int lo, int hi)
+	{
+		if(hi <= lo) return;
+		int j = partition(a, lo, hi);
+		sort(a, lo, j-1);
+		sort(a, j+1, hi);
 	}
 	
 }
