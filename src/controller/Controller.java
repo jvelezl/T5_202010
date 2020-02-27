@@ -89,6 +89,10 @@ public class Controller <T extends Comparable<T>>{
 					view.printMessage("-----------\n Ordenar por MergeSort.\n-----------");
 					modelo.mergeSort(modelo.copiarComparendos());
 					 break;
+				case 7:
+					view.printMessage("-----------\n Ordenar por MergeSort.\n-----------");
+					modelo.quickSort(modelo.copiarComparendos());
+					 break;
 				default: 
 					view.printMessage("--------- \n Opcion Invalida !! \n---------");
 					break;

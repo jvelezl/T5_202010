@@ -12,6 +12,7 @@ import model.data_structures.Iterator;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.MergeSort;
 import model.data_structures.Node;
+import model.data_structures.QuickSort;
 import model.data_structures.IListaEncadenada;
 import model.data_structures.Shell;
 import model.data_structures.MergeSort;
@@ -194,6 +195,23 @@ public ListaEncadenada<Comparendos> cargarDatos() {
 						+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
 			}
 		}
-	
+	public void quickSort(Comparable[] a)
+	{
+			QuickSort.sort2(a);
+			for(int i=0;i<11;i++)
+			{
+					int indice=i+1;
+			 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
+				+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
+				+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
+			}
+			for(int j=a.length-10;j<a.length;j++)
+			{
+				int indice=j+1;
+				System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
+						+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
+						+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
+			}
+		}
 }
 	
