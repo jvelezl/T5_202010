@@ -107,14 +107,14 @@ public class Comparendos implements Comparable<Comparendos> {
 	{
 		return v.compareTo(w) < 0; 
 	}
-	
+
 	private static void exch(Comparable[] a, int i, int j)
 	{
-	   Comparable swap = a[i];
-	   a[i] = a[j];
-	   a[j] = swap;
+		Comparable swap = a[i];
+		a[i] = a[j];
+		a[j] = swap;
 	}
-	
+
 	public static void shellSort(Comparable datos[])
 	{
 		crearArregloDeObjetos();
@@ -127,7 +127,7 @@ public class Comparendos implements Comparable<Comparendos> {
 		{
 			for (int i = h; i < N; i++) 
 			{
-			
+
 				for (int j = i ; j >=h && less(datos[j], datos[j-h]); j-=h)
 					exch (datos, j, j-h);
 			}
@@ -136,8 +136,37 @@ public class Comparendos implements Comparable<Comparendos> {
 
 		}
 	}
-	
+
 	//Requerimiento 3
+
+	private static void merge (Comparable[] a, Comparable[] aux, int lo, int mid, int hi)
+	{
+		for ( int k = lo; k <= hi; k ++)
+		{
+			aux[k] = a[k];
+		}
+
+		int i = lo, j = mid+i;
+		for (int k = lo; k <= hi; k++) 
+		{
+			if (i > mid )  a[k] = aux [j++];
+			else if (j > hi) a[k] = aux[i++];
+			else if (less(aux[j], aux[i])) a[k]= aux[j++];
+			else a[k] = aux [j++];
+
+		}
+	}
+	
+	private static void sort ( Comparable[] a, Comparable[] aux, int lo, int hi)
+	{
+		if ( hi <= lo ) return;
+		int mid = lo + (hi - lo)/2;
+		sort(a, aux, lo, mid);
+		sort(a, aux, mid+1, hi);
+		merge(a, aux, lo, mid, hi);
+	}
+	
 }
+
 
 
