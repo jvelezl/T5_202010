@@ -15,7 +15,7 @@ public class Comparendos implements Comparable<Comparendos> {
 
 	private double latitud;
 	private double longitud;
-	
+
 	public Comparendos(int objeId, Date fecha, String descripcion, String detencion, String claseVeh, String tipoSer, String codInfraccion, String localidadP, double lonP, double latP)
 	{
 		objectId = objeId;
@@ -29,7 +29,7 @@ public class Comparendos implements Comparable<Comparendos> {
 		longitud = lonP;
 		latitud = latP;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Comparendo [OBJECTID=" + objectId + ", FECHA_HORA=" + fecha_hora + ", DES_INFRAC=" + des_infrac
@@ -37,7 +37,7 @@ public class Comparendos implements Comparable<Comparendos> {
 				+ ", INFRACCION=" + infraccion + ", LOCALIDAD=" + localidad + ", latitud=" + latitud + ", longitud="
 				+ longitud + "]";
 	}
-	
+
 	public int darId()
 	{
 		return objectId;
@@ -94,7 +94,50 @@ public class Comparendos implements Comparable<Comparendos> {
 			comparador=1;
 		return comparador;
 	}
+
+	public static Comparable[ ] crearArregloDeObjetos()
+	{
+		return Comparable[ ] copiarComparendos();
+
+	}
+
+	//Requerimiento 2: Ordenar ascendentemente los comparendos obtenidos en la copia del requerimiento 1 (arreglo de objetos Comparables) usando el algoritmo ShellSort
+
+	private static boolean less(Comparable v, Comparable w)
+	{
+		return v.compareTo(w) < 0; 
+	}
 	
+	private static void exch(Comparable[] a, int i, int j)
+	{
+	   Comparable swap = a[i];
+	   a[i] = a[j];
+	   a[j] = swap;
+	}
+	
+	public static void shellSort(Comparable datos[])
+	{
+		crearArregloDeObjetos();
+		int N = crearArregloDeObjetos().length;
+
+		int h = 1;
+		while ( h < N/3) h= 3*h +1;
+
+		while(h>=1)
+		{
+			for (int i = h; i < N; i++) 
+			{
+			
+				for (int j = i ; j >=h && less(datos[j], datos[j-h]); j-=h)
+					exch (datos, j, j-h);
+			}
+
+			h = h/3;
+
+		}
+	}
+	
+	//Requerimiento 3
 }
 
 
