@@ -8,6 +8,7 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 	private Node<T> primero;
 	private Node<T> ultimo;
 	private int longitud;
+	private int longitudAc;
 
 	@Override
 	public Iterator<T> iterator() {
@@ -115,5 +116,4 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 	
 
 	}
-
 }

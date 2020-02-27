@@ -10,12 +10,17 @@ import java.util.Date;
 import model.data_structures.Comparendos;
 import model.data_structures.Iterator;
 import model.data_structures.ListaEncadenada;
+import model.data_structures.MergeSort;
+import model.data_structures.Node;
 import model.data_structures.IListaEncadenada;
+import model.data_structures.Shell;
+import model.data_structures.MergeSort;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+
 
 /**
  * Definicion del modelo del mundo
@@ -27,13 +32,12 @@ public class Modelo {
 	 */
 	private final static String PATH = "./data/comparendos_dei_2018_small.geojson"; // Processing JSONObject
 	private ListaEncadenada<Comparendos> datos;
-	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public Modelo()
 	{
-		datos = new ListaEncadenada<Comparendos>();
+		datos = cargarDatos();
 	}
 public ListaEncadenada<Comparendos> cargarDatos() {
 		
@@ -139,7 +143,57 @@ public ListaEncadenada<Comparendos> cargarDatos() {
 	public boolean eliminar(Comparendos dato)
 	{
 		return datos.eliminar(dato);
+	} 
+
+	public Comparable[] copiarComparendos()
+	{
+		Comparable[] a=new Comparable[datos.darLongitud()];
+		Iterator<Comparendos> b=datos.iterator();
+		int i=0;
+		while(b.hasNext())
+		{
+			Comparendos actual=b.next();
+			a[i]=actual;
+			i++;
+		}
+		return a;
 	}
-
-
+	public void shellSort(Comparable[] a)
+	{
+		Shell.shellSort(a);
+		for(int i=0;i<11;i++)
+		{
+				int indice=i+1;
+		 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
+			+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
+			+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
+		}
+		for(int j=a.length-10;j<a.length;j++)
+		{
+			int indice=j+1;
+			System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
+					+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
+					+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
+		}
+	}
+	public void mergeSort(Comparable[] a)
+	{
+			MergeSort.sort2(a);
+			for(int i=0;i<11;i++)
+			{
+					int indice=i+1;
+			 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
+				+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
+				+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
+			}
+			for(int j=a.length-10;j<a.length;j++)
+			{
+				int indice=j+1;
+				System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
+						+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
+						+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
+			}
+		}
+	
 }
+	

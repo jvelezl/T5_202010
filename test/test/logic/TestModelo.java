@@ -20,6 +20,7 @@ public class TestModelo {
 	public void setUp1() {
 		modelo= new Modelo();
 		modelo.cargarDatos();
+		modelo.copiarComparendos();
 	}
 
 	@Test
@@ -27,20 +28,13 @@ public class TestModelo {
 		assertTrue(modelo!=null);
 		assertEquals(0, modelo.darTamano());  // Modelo con 0 elementos presentes.
 	}
-
 	@Test
-	public void testDarTamano() {
-		setUp1();
-		assertSame(19,modelo.darTamano());
-	}
 
-	@Test
-	public void testBuscar() {
+	public void testDarTamanoAC()
+	{
 		setUp1();
-		assertSame(176695, modelo.buscarPorId(176695).darId());
-		// TODO Completar la prueba
+		assertSame(modelo.darLista().darLongitud(),modelo.copiarComparendos().length);
 	}
-
 
 
 }

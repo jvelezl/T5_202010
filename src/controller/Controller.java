@@ -51,7 +51,7 @@ public class Controller <T extends Comparable<T>>{
 				    System.out.println("El último comparendo es: ObjectId: " + ultimo.darId() + ", Fecha: " + ultimo.darFecha()
 						+ ", Infracción: "+ ultimo.darInfraccion()+ ", Clase Vehículo: " + ultimo.darClaseVehi() + ", Tipo servicio: " + ultimo.darTipo()
 						+ ", Localidad: " + ultimo.darLocalidad());
-				    view.printMessage("Numero actual de elementos " + lista.darLongitud()+ "\n---------");						
+				    view.printMessage("Numero actual de elementos " + modelo.darTamano()+ "\n---------");						
 					break;
 
 				case 2:
@@ -76,7 +76,19 @@ public class Controller <T extends Comparable<T>>{
 					lector.close();
 					fin = true;
 					break;	
-
+				case 4:
+					view.printMessage("-----------\n Copiar a un arreglo Comparable \n-----------");
+					Comparable[] a=modelo.copiarComparendos();
+					view.printMessage("El tamaño del arreglo copia es:"+a.length);
+					break;
+				case 5:
+					view.printMessage("-----------\n Ordenar por ShellSort.\n-----------");
+					modelo.shellSort(modelo.copiarComparendos());
+					 break;
+				case 6:
+					view.printMessage("-----------\n Ordenar por MergeSort.\n-----------");
+					modelo.mergeSort(modelo.copiarComparendos());
+					 break;
 				default: 
 					view.printMessage("--------- \n Opcion Invalida !! \n---------");
 					break;
