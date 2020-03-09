@@ -1,12 +1,12 @@
 package model.data_structures;
 
-public class MaxColaCP <Key extends Comparable <Key>>
+public class MaxHeapCP <Key extends Comparable <Key>>
 {
 	
 	private Key[] cp;
 	private int N = 0;
 	
-	public MaxColaCP (int maxN)
+	public MaxHeapCP (int maxN)
 	{
 		cp= (Key[]) new Comparable[maxN +1];
 	}
@@ -38,10 +38,7 @@ public class MaxColaCP <Key extends Comparable <Key>>
 		
 	}
 	
-	public <T> T darMax()
-	{
-		
-	}
+	
 	
 	
 	//Métodos auxiliares
