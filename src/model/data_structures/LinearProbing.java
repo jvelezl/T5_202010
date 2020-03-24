@@ -1,7 +1,5 @@
 package model.data_structures;
-
-import com.sun.org.apache.bcel.internal.generic.ConstantPushInstruction;
-
+//Esta clase se creó a partir del libro algorithms 
 public class LinearProbing <K, V>
 {
 
