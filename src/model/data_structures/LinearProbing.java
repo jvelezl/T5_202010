@@ -81,5 +81,9 @@ public class LinearProbing <K, V>
 		
 	}
 
+	public void Iterator<K> llaves()
+	{
+		
+	}
 
 }

@@ -5,10 +5,13 @@ import java.util.NoSuchElementException;
 
 public class IteratorLista <T extends Comparable<T>> implements Iterator<T> {
 	Node<T> proximo;
+	
 	IteratorLista(Node<T> primero)
 	{
 		proximo=primero;
 	}
+	
+	
 	public boolean hasNext()
 	{
 		return proximo!=null;
@@ -17,7 +20,7 @@ public class IteratorLista <T extends Comparable<T>> implements Iterator<T> {
 	{
 		if(proximo==null)
 		{
-			throw new NoSuchElementException("No hay próximo");
+			throw new NoSuchElementException("No hay prï¿½ximo");
 		}
 		T elemento=proximo.darElemento();
 		proximo=proximo.darSiguiente();
