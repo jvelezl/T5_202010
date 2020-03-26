@@ -81,9 +81,15 @@ public class LinearProbing <K, V>
 		
 	}
 
-	public void Iterator<K> llaves()
+	public ListaEncadenada llaves()
 	{
+		ListaEncadenada lista = new ListaEncadenada() ;
+		for (int i = 0; i < M; i++) 
+		{
+			lista.agregar(i);
+		}
 		
+		return lista;
 	}
 
 }

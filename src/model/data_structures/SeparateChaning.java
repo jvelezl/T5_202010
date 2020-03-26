@@ -47,9 +47,15 @@ public class SeparateChaning <K, V>
 		put(llave, null);
 	}
 
-	public Iterable<K> llaves()
+	public ListaEncadenada llaves()
 	{
-
+		ListaEncadenada lista = new ListaEncadenada() ;
+		for (int i = 0; i < M; i++) 
+		{
+			lista.agregar(i);
+		}
+		
+		return lista;
 	}
 
 
