@@ -15,8 +15,9 @@ public class Comparendos implements Comparable<Comparendos> {
 
 	private double latitud;
 	private double longitud;
+	
 
-	public Comparendos(int objeId, Date fecha, String descripcion, String detencion, String claseVeh, String tipoSer, String codInfraccion, String localidadP, double lonP, double latP)
+	public Comparendos(int objeId, Date fecha, String detencion, String claseVeh, String tipoSer, String codInfraccion, String descripcion, String localidadP, double lonP, double latP)
 	{
 		objectId = objeId;
 		fecha_hora = fecha;
@@ -72,33 +73,25 @@ public class Comparendos implements Comparable<Comparendos> {
 			comparador=1;
 		return comparador;
 	}
-	public int compareToDate(Comparendos o)
-	{
-		int comparador=-2;
-		if(Integer.parseInt(fecha_hora.toString() )< Integer.parseInt(o.darFecha().toString()))
-			comparador=-1;
-		else if(fecha_hora == o.darFecha())
-			comparador=0;
-		else if(Integer.parseInt(fecha_hora.toString() )>Integer.parseInt(o.darFecha().toString()))
-			comparador=1;
-		return comparador;
+	public static class compararXLocalidad implements Comparator<Comparendos>	{
+		public int compare(Comparendos o1, Comparendos o2)
+		{
+			return o1.darLocalidad().compareToIgnoreCase(o2.darLocalidad());
+		}
 	}
-	public int compareToInfraccion(Comparendos o)
+	public static class compararXInfraccion implements Comparator<Comparendos>
 	{
-		int comparador=-2;
-		if(Integer.parseInt(infraccion)< Integer.parseInt(o.infraccion))
-			comparador=-1;
-		else if(Integer.parseInt(infraccion)== Integer.parseInt(o.infraccion))
-			comparador=0;
-		else if(Integer.parseInt(infraccion)> Integer.parseInt(o.infraccion))
-			comparador=1;
-		return comparador;
+		public int compare(Comparendos o1, Comparendos o2)
+		{
+			
+        	return o1.darInfraccion().compareToIgnoreCase(o2.darInfraccion());
 	}
-
-
-	
-}
-
-
-
-
+	}
+	public static class compararXFecha implements Comparator<Comparendos>
+	{
+		public int compare(Comparendos o1, Comparendos o2)
+		{
+			return o1.darFecha().compareTo(o2.darFecha());
+		}
+	}
+	}

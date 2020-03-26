@@ -1,22 +1,29 @@
 package model.logic;
 import java.io.FileNotFoundException;
 
+
+
 import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-
+import java.util.Iterator;
+import java.util.List;
 
 import model.data_structures.Comparendos;
-import model.data_structures.Iterator;
-import model.data_structures.ListaEncadenada;
+import model.data_structures.Comparator;
+import model.data_structures.LinearProbing;
 import model.data_structures.MergeSort;
 import model.data_structures.Node;
 import model.data_structures.QuickSort;
+import model.data_structures.SeparateChaning;
 import model.data_structures.IListaEncadenada;
 import model.data_structures.Shell;
 import model.data_structures.MergeSort;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -32,19 +39,28 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 	private final static String PATH = "./data/comparendos_dei_2018_small.geojson"; // Processing JSONObject
-	private ListaEncadenada<Comparendos> datos;
+	String key;
+	String primeraKey;
+	int i=0;
+	private SeparateChaning<String ,Comparendos> datos;
+	private LinearProbing<String, Comparendos> datos2;
+	private Comparendos primero;
+	private Comparendos x=null;
+	Comparendos.compararXFecha compXFecha=new Comparendos.compararXFecha();
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public Modelo()
 	{
-		datos = cargarDatos();
+	
 	}
-public ListaEncadenada<Comparendos> cargarDatos() {
+public Comparendos[] cargarDatos() {
 		
 	// Solucion de carga de datos publicada al curso Estructuras de Datos 2020-10
-		ListaEncadenada<Comparendos> datos = new ListaEncadenada<Comparendos>();
-
+		Comparendos[] ultimoYPrimero=new Comparendos[2];
+		String llaveUltimoElemento="";
+		datos = new SeparateChaning<String,Comparendos>();
+		datos2=new LinearProbing<String, Comparendos>(20);
 		JsonReader reader;
 		try {
 			reader = new JsonReader(new FileReader(PATH));
@@ -54,8 +70,9 @@ public ListaEncadenada<Comparendos> cargarDatos() {
 			
 			
 			SimpleDateFormat parser=new SimpleDateFormat("yyyy/MM/dd");
-
+			
 			for(JsonElement e: e2) {
+				
 				int OBJECTID = e.getAsJsonObject().get("properties").getAsJsonObject().get("OBJECTID").getAsInt();
 				
 				String s = e.getAsJsonObject().get("properties").getAsJsonObject().get("FECHA_HORA").getAsString();	
@@ -73,35 +90,25 @@ public ListaEncadenada<Comparendos> cargarDatos() {
 				
 				double latitud = e.getAsJsonObject().get("geometry").getAsJsonObject().get("coordinates").getAsJsonArray()
 						.get(1).getAsDouble();
-
-				Comparendos c = new Comparendos(OBJECTID, FECHA_HORA, MEDIO_DETE,CLASE_VEHI, TIPO_SERVI, INFRACCION,  DES_INFRAC, LOCALIDAD, longitud, latitud);
-				datos.agregar(c);
+				key=FECHA_HORA+CLASE_VEHI+INFRACCION;
+				if(i==0)
+				{
+					primeraKey=key;
+				}
+				Comparendos x = new Comparendos(OBJECTID, FECHA_HORA, MEDIO_DETE,CLASE_VEHI, TIPO_SERVI, INFRACCION,  DES_INFRAC, LOCALIDAD, longitud, latitud);
+				datos.put(key, x);
+				datos2.put(key, x);
+				llaveUltimoElemento=key;
+				i++;
 			}
-
+			ultimoYPrimero[0]=datos.get(primeraKey);
+			ultimoYPrimero[1]=datos.get(llaveUltimoElemento);
+			
 		} catch (FileNotFoundException | ParseException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		return datos;	
-		
-	}
-	
-	/**
-	 * Servicio de consulta de numero de elementos presentes en el modelo 
-	 * @return numero de elementos presentes en el modelo
-	 */
-	public int darTamano()
-	{
-		return datos.darLongitud();
-	}
-
-	/**
-	 * Requerimiento de agregar dato
-	 * @param dato
-	 */
-	public void agregar(Comparendos dato)
-	{	
-		datos.agregar(dato);
+		return ultimoYPrimero;
 	}
 	
 	/**
@@ -109,109 +116,120 @@ public ListaEncadenada<Comparendos> cargarDatos() {
 	 * @param dato Dato a buscar
 	 * @return dato encontrado
 	 */
-	public Comparendos buscar(Comparendos dato)
+	public Comparendos buscar(String llave)
 	{
-		return datos.buscar(dato);
+		return datos.get(llave);
 	}
-	public Comparendos buscarPorId(int Id)
-	{
-		Iterator<Comparendos> c= datos.iterator();
-		Comparendos comp=null;
-		Comparendos aBuscar=null;
-		Boolean a=false;
-		while(c.hasNext() && !a){
-			comp=c.next();
-			if(comp.darId()==Id)
-			{
-				a=true;
-				aBuscar=comp;
-			}
-				
-		}
-		return aBuscar;
-		
-	}
-
-	public ListaEncadenada<Comparendos> darLista(){
-		return datos;
-	}
-	
 	/**
 	 * Requerimiento eliminar dato
 	 * @param dato Dato a eliminar
 	 * @return dato eliminado
 	 */
-	public boolean eliminar(Comparendos dato)
+	public void eliminar(String llave)
 	{
-		return datos.eliminar(dato);
-	} 
-
+		datos.delete(llave);
+		datos2.delete(llave);
+	}
+	public SeparateChaning separateChaning()
+	{
+		return datos;
+	}
+	public LinearProbing linearProbing()
+	{
+		return datos2;
+	}
+	public Comparendos ultimoComparendo()
+	{
+		return x;
+	}
+	public Comparendos primerComparendo()
+	{
+		return primero;
+	}
+	public String llaveComparendoLinear(String[] x)
+	{
+		String res=linearProbing().procesarLlave(x);
+		return res;
+	}
 	public Comparable[] copiarComparendos()
 	{
-		Comparable[] a=new Comparable[datos.darLongitud()];
-		Iterator<Comparendos> b=datos.iterator();
-		int i=0;
-		while(b.hasNext())
+		Comparable[] a=new Comparable[linearProbing().darN()];
+		for(int i=0;i<linearProbing().darM();i++)
 		{
-			Comparendos actual=b.next();
-			a[i]=actual;
-			i++;
+			if(linearProbing().valoresArreglo()[i]!=null)
+			{
+				a[i]=(Comparable)linearProbing().valoresArreglo()[i];
+			}
+			
 		}
 		return a;
 	}
-	public void shellSort(Comparable[] a)
+	public Comparendos[] darComparendosPorLlaveLinear(String key)
 	{
-		Shell.shellSort(a);
-		for(int i=0;i<11;i++)
+		Comparendos[] res=new Comparendos[linearProbing().darM()];
+		Comparable[] w=copiarComparendos();
+		Comparable[] a=ordenarPorFecha(w);
+		Date buscada=linearProbing().retornarFechaBuscada();
+		System.out.println(buscada);
+		int primerIndiceArreglo=primeraKey(a, 0, a.length, buscada, 0);
+		int ultimoIndiceArreglo=ultimaKey(a, 0, a.length, buscada, 0);
+		String[] porFechas=new String[ultimoIndiceArreglo-primerIndiceArreglo];
+		int j=0;
+		for(int i=primerIndiceArreglo;i<ultimoIndiceArreglo;i++)
 		{
-				int indice=i+1;
-		 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
-			+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
-			+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
+			porFechas[j]=(String)linearProbing().llavesArreglo()[i];
+			j++;
 		}
-		for(int j=a.length-10;j<a.length;j++)
+		int t=0;
+		for(int i=0;i<porFechas.length;i++)
 		{
-			int indice=j+1;
-			System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
-					+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
-					+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
+			if(porFechas[i].equalsIgnoreCase(key))
+			{
+				res[t]=(Comparendos)linearProbing().get(porFechas[i]);
+				t++;
+			}
 		}
+		return res;
 	}
-	public void mergeSort(Comparable[] a)
-	{
-			MergeSort.sort2(a);
-			for(int i=0;i<11;i++)
-			{
-					int indice=i+1;
-			 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
-				+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
-				+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
-			}
-			for(int j=a.length-10;j<a.length;j++)
-			{
-				int indice=j+1;
-				System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
-						+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
-						+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
-			}
-		}
-	public void quickSort(Comparable[] a)
-	{
-			QuickSort.sort2(a);
-			for(int i=0;i<11;i++)
-			{
-					int indice=i+1;
-			 System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[i]).darId() +", Fecha: " + ((Comparendos) a[i]).darFecha()
-				+ ", Infracción: "+ ((Comparendos) a[i]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[i]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[i]).darTipo()
-				+  ", Localidad: " + ((Comparendos) a[i]).darLocalidad());
-			}
-			for(int j=a.length-10;j<a.length;j++)
-			{
-				int indice=j+1;
-				System.out.println("El "+indice+" comparendo es: ObjectId: " + ((Comparendos) a[j]).darId() +", Fecha: " + ((Comparendos) a[j]).darFecha()
-						+ ", Infracción: "+ ((Comparendos) a[j]).darInfraccion()+ ", Clase Vehículo: " + ((Comparendos) a[j]).darClaseVehi() + ", Tipo servicio: " + ((Comparendos) a[j]).darTipo()
-						+  ", Localidad: " + ((Comparendos) a[j]).darLocalidad());
-			}
+	public  int primeraKey(Comparable[] arr , int low, int high, Date x, int n) 
+    { 
+	
+        if(high >= low) 
+        { 
+            int mid = low + (high - low)/2; 
+            if( ( mid == 0 || x.after(((Comparendos) arr[mid-1]).darFecha())) && x.equals(((Comparendos) arr[mid]).darFecha())) 
+                return mid; 
+             else if(x.after(((Comparendos) arr[mid]).darFecha())) 
+                return primeraKey(arr, (mid + 1), high, x, n ); 
+            else
+                return primeraKey(arr, low, (mid -1), x, n); 
+        } 
+    return -1; 
+    } 
+   
+    public  int ultimaKey(Comparable[] arr , int low, int high, Date x, int n) 
+    { 
+    	
+        if (high >= low) 
+        { 
+            int mid = low + (high - low)/2; 
+            if (( mid == n-1 || x.before(((Comparendos)arr[mid+1]).darFecha()) ) && x.equals(((Comparendos)arr[mid]).darFecha())) 
+                 return mid; 
+            else if (x.before(((Comparendos)arr[mid]).darFecha())) 
+                return ultimaKey(arr, low, (mid -1), x, n); 
+            else
+                return ultimaKey(arr, (mid + 1), high, x, n); 
+        } 
+    return -1;
+    }
+	 public Comparable[] ordenarPorFecha(Comparable[] a)
+	 {
+		 mergeSort(a,compXFecha);
+		 return a;
+	 }
+	 public void mergeSort(Comparable[] a, Comparator<Comparendos> b)
+		{
+			MergeSort.sort2(a, b);
 		}
 }
 	

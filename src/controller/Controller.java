@@ -3,8 +3,9 @@ package controller;
 import java.util.Scanner;
 
 
+
 import model.data_structures.Comparendos;
-import model.data_structures.ListaEncadenada;
+
 import model.data_structures.Node;
 import model.logic.Modelo;
 import view.View;
@@ -41,58 +42,47 @@ public class Controller <T extends Comparable<T>>{
 			switch(option){
 				case 1:
 					view.printMessage("--------- \nCargar Lista: "); 
-					ListaEncadenada<Comparendos> lista=modelo.cargarDatos();
-					Comparendos primero=lista.darPrimero().darElemento();
-					Comparendos ultimo=lista.darUltimo().darElemento();
-				    view.printMessage("Lista Cargada");
-				    System.out.println("El primer comparendo es: ObjectId: " + primero.darId() +", Fecha: " + primero.darFecha()
-						+ ", Infracción: "+ primero.darInfraccion()+ ", Clase Vehículo: " + primero.darClaseVehi() + ", Tipo servicio: " + primero.darTipo()
-						+  ", Localidad: " + primero.darLocalidad());
+					Comparendos[] xs=modelo.cargarDatos();
+					Comparendos primero=xs[0];
+					Comparendos ultimo=xs[1];
+					System.out.println("El primer comparendo es: ObjectId: " + primero.darId() + ", Fecha: " + primero.darFecha()
+					+ ", Infracción: "+ primero.darInfraccion()+ ", Localidad: " + primero.darLocalidad());
 				    System.out.println("El último comparendo es: ObjectId: " + ultimo.darId() + ", Fecha: " + ultimo.darFecha()
-						+ ", Infracción: "+ ultimo.darInfraccion()+ ", Clase Vehículo: " + ultimo.darClaseVehi() + ", Tipo servicio: " + ultimo.darTipo()
-						+ ", Localidad: " + ultimo.darLocalidad());
-				    view.printMessage("Numero actual de elementos " + modelo.darTamano()+ "\n---------");						
-					break;
+						+ ", Infracción: "+ ultimo.darInfraccion()+ ", Localidad: " + ultimo.darLocalidad());
+				    System.out.println("El número de tuplas en la Tabla de Hash Linear Probing es:"+modelo.linearProbing().darN()+" y la de "
+				    		+ "la Tabla de Hash Separate Chaning es:"+modelo.separateChaning().darN());
+				    System.out.println("El tamaño inicial en la Tabla de Hash Linear Probing es:"+modelo.linearProbing().darTamanoInicial()+" y la de "
+				    		+ "la Tabla de Hash Separate Chaining es:"+modelo.separateChaning().TAMANO_INICIAL);
+				    System.out.println("El tamaño final en la Tabla de Hash Linear Probing es:"+modelo.linearProbing().darM()+" y la de "
+				    		+ "la Tabla de Hash Separate Chaining es:"+modelo.separateChaning().darM());
+				    System.out.println("El factor de carga final en la Tabla de Hash Linear Probing es:"+modelo.linearProbing().factorDeCarga()+" y la de "
+				    		+ "la Tabla de Hash Separate Chaining es:"+modelo.separateChaning().darFactorDeCarga());
+				    System.out.println("El numero de rehash en la Tabla de Hash Linear Probing es:"+modelo.linearProbing().numeroRehash()+" y la de "
+				    		+ "la Tabla de Hash Separate Chaining es:"+modelo.separateChaning().numeroResize());						
+				   
+				    break;
 
 				case 2:
-					view.printMessage("--------- \nIdentificador del comparendo a buscar: ");
-					dato = lector.nextInt();
-					respuesta= modelo.buscarPorId(dato);
-					if ( respuesta != null)
+					Scanner lector2=new Scanner(System.in);
+					view.printMessage("--------- \nBuscar comparendo: ");
+					System.out.println("Introduzca la fecha (formato yyyy-MM-dd HH:mm), la clase del vehículo y  la infracción. Todos separados por comas y en ese orden.");
+					String llave=lector2.nextLine();
+					String key[]=llave.split(",");
+					String key2=modelo.llaveComparendoLinear(key);
+					Comparendos[] buscados=modelo.darComparendosPorLlaveLinear(key2);
+					for(int i=0;i<buscados.length;i++)
 					{
-						view.printMessage("Comparendo encontrado: "+ "ObjectId: " + respuesta.darId() + ", Fecha: " + respuesta.darFecha()
-						+ ", Infracción: "+ respuesta.darInfraccion()+ ", Clase Vehículo: " + respuesta.darClaseVehi() + ", Tipo servicio: " + respuesta.darTipo()
-						+ ", Localidad: " + respuesta.darLocalidad());
+						System.out.println("El primer comparendo es: ObjectId: " + buscados[i].darId() + ", Fecha: " + buscados[i].darFecha()
+						+ ", Infracción: "+ buscados[i].darInfraccion()+ ", Localidad: " + buscados[i].darLocalidad());
 					}
-					else
-					{
-						view.printMessage("Elemento NO encontrado");
-					}
-					view.printMessage("Numero actual de elementos " + "\n---------");						
-					break;
 					
+					break;
 				case 3: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;
 					break;	
-				case 4:
-					view.printMessage("-----------\n Copiar a un arreglo Comparable \n-----------");
-					Comparable[] a=modelo.copiarComparendos();
-					view.printMessage("El tamaño del arreglo copia es:"+a.length);
-					break;
-				case 5:
-					view.printMessage("-----------\n Ordenar por ShellSort.\n-----------");
-					modelo.shellSort(modelo.copiarComparendos());
-					 break;
-				case 6:
-					view.printMessage("-----------\n Ordenar por MergeSort.\n-----------");
-					modelo.mergeSort(modelo.copiarComparendos());
-					 break;
-				case 7:
-					view.printMessage("-----------\n Ordenar por MergeSort.\n-----------");
-					modelo.quickSort(modelo.copiarComparendos());
-					 break;
+		
 				default: 
 					view.printMessage("--------- \n Opcion Invalida !! \n---------");
 					break;
