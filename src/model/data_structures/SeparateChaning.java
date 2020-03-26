@@ -73,6 +73,7 @@ public class SeparateChaning <K, V>
 	{
 		put(llave, null);
 	}
+<<<<<<< HEAD
 	public double darFactorDeCarga()
 	{
 		return (double)N/M;
@@ -117,6 +118,18 @@ public class SeparateChaning <K, V>
 	public int numeroResize()
 	{
 		return numeroResize; 		
+=======
+
+	public ListaEncadenada llaves()
+	{
+		ListaEncadenada lista = new ListaEncadenada() ;
+		for (int i = 0; i < M; i++) 
+		{
+			lista.agregar(i);
+		}
+		
+		return lista;
+>>>>>>> c7d5212408878dc8ee764658d34568a5545088fb
 	}
 	public boolean contains(K key) {
 

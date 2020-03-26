@@ -128,6 +128,7 @@ public class LinearProbing <K, V>
 
             if (llaves[i] != null) queue.enqueue(llaves[i]);
 
+<<<<<<< HEAD
         return queue;
 	}
 	public int darN()
@@ -165,6 +166,17 @@ public class LinearProbing <K, V>
 	 	fecha=nueva;
 	 	String llave=nueva+claseVehiculo+infraccion;
 	 	return llave;
+=======
+	public ListaEncadenada llaves()
+	{
+		ListaEncadenada lista = new ListaEncadenada() ;
+		for (int i = 0; i < M; i++) 
+		{
+			lista.agregar(i);
+		}
+		
+		return lista;
+>>>>>>> c7d5212408878dc8ee764658d34568a5545088fb
 	}
 	public Date retornarFechaBuscada()
 	{
