@@ -15,6 +15,7 @@ import java.util.List;
 import model.data_structures.Comparendos;
 import model.data_structures.Comparator;
 import model.data_structures.LinearProbing;
+import model.data_structures.ListaEncadenada;
 import model.data_structures.MergeSort;
 import model.data_structures.Node;
 import model.data_structures.QuickSort;
@@ -42,6 +43,7 @@ public class Modelo {
 	String key;
 	String primeraKey;
 	int i=0;
+	int U=0;
 	private SeparateChaning<String ,Comparendos> datos;
 	private LinearProbing<String, Comparendos> datos2;
 	private Comparendos primero;
@@ -146,49 +148,90 @@ public Comparendos[] cargarDatos() {
 	{
 		return primero;
 	}
+	//Req 3 Taller 5
 	public String llaveComparendoLinear(String[] x)
 	{
 		String res=linearProbing().procesarLlave(x);
 		return res;
 	}
+	public String llaveComparendoChaining(String[] x)
+	{
+		return separateChaning().procesarLlave(x);
+	}
 	public Comparable[] copiarComparendos()
 	{
 		Comparable[] a=new Comparable[linearProbing().darN()];
+		int y=0;
 		for(int i=0;i<linearProbing().darM();i++)
 		{
 			if(linearProbing().valoresArreglo()[i]!=null)
 			{
-				a[i]=(Comparable)linearProbing().valoresArreglo()[i];
+				a[y]=(Comparable)linearProbing().valoresArreglo()[i];
+				y++;
 			}
 			
 		}
 		return a;
 	}
 	public Comparendos[] darComparendosPorLlaveLinear(String key)
-	{
-		Comparendos[] res=new Comparendos[linearProbing().darM()];
+	{	
+		U=0;
+		Comparendos[] res=new Comparendos[linearProbing().darN()];
 		Comparable[] w=copiarComparendos();
 		Comparable[] a=ordenarPorFecha(w);
 		Date buscada=linearProbing().retornarFechaBuscada();
-		System.out.println(buscada);
 		int primerIndiceArreglo=primeraKey(a, 0, a.length, buscada, 0);
-		int ultimoIndiceArreglo=ultimaKey(a, 0, a.length, buscada, 0);
-		String[] porFechas=new String[ultimoIndiceArreglo-primerIndiceArreglo];
-		int j=0;
-		for(int i=primerIndiceArreglo;i<ultimoIndiceArreglo;i++)
+		int ultimoIndiceArreglo;
+		if(primerIndiceArreglo==a.length-1)
 		{
-			porFechas[j]=(String)linearProbing().llavesArreglo()[i];
-			j++;
+			ultimoIndiceArreglo=a.length;
+		}
+		else
+		{
+			ultimoIndiceArreglo=ultimaKey(a, 0, a.length, buscada, 0);
+		}
+		String[] porFechas=new String[0];
+		if(primerIndiceArreglo==0 && (ultimoIndiceArreglo>primerIndiceArreglo || ultimoIndiceArreglo==primerIndiceArreglo))
+		{
+			porFechas=new String[(ultimoIndiceArreglo-primerIndiceArreglo)+1];
+			int j=0;
+			for(int i=primerIndiceArreglo;i<porFechas.length;i++)
+			{
+				porFechas[j]=((Comparendos)a[i]).darFecha()+((Comparendos)a[i]).darClaseVehi()+((Comparendos)a[i]).darInfraccion();
+				j++;
+			}
+		}
+		else if(primerIndiceArreglo==ultimoIndiceArreglo){
+			porFechas=new String[1];
+			ultimoIndiceArreglo++;
+			int j=0;
+			for(int i=primerIndiceArreglo;i<ultimoIndiceArreglo;i++)
+			{
+				porFechas[j]=((Comparendos)a[i]).darFecha()+((Comparendos)a[i]).darClaseVehi()+((Comparendos)a[i]).darInfraccion();
+				j++;
+			}
+		}
+		else
+		{
+			porFechas=new String[ultimoIndiceArreglo-primerIndiceArreglo];
+			int j=0;
+			for(int i=primerIndiceArreglo;i<ultimoIndiceArreglo;i++)
+			{
+				porFechas[j]=((Comparendos)a[i]).darFecha()+((Comparendos)a[i]).darClaseVehi()+((Comparendos)a[i]).darInfraccion();
+				j++;
+			}
 		}
 		int t=0;
 		for(int i=0;i<porFechas.length;i++)
 		{
 			if(porFechas[i].equalsIgnoreCase(key))
-			{
-				res[t]=(Comparendos)linearProbing().get(porFechas[i]);
-				t++;
-			}
+				{
+					res[t]=(Comparendos)linearProbing().get(key);
+					t++;
+					U++;
+				}
 		}
+		
 		return res;
 	}
 	public  int primeraKey(Comparable[] arr , int low, int high, Date x, int n) 
@@ -213,7 +256,7 @@ public Comparendos[] cargarDatos() {
         if (high >= low) 
         { 
             int mid = low + (high - low)/2; 
-            if (( mid == n-1 || x.before(((Comparendos)arr[mid+1]).darFecha()) ) && x.equals(((Comparendos)arr[mid]).darFecha())) 
+            if (( mid == n-1|| x.before(((Comparendos)arr[mid+1]).darFecha()) ) && x.equals(((Comparendos)arr[mid]).darFecha())) 
                  return mid; 
             else if (x.before(((Comparendos)arr[mid]).darFecha())) 
                 return ultimaKey(arr, low, (mid -1), x, n); 
@@ -231,5 +274,22 @@ public Comparendos[] cargarDatos() {
 		{
 			MergeSort.sort2(a, b);
 		}
+	 public int retornarUReq2()
+	 {
+		 return U;
+	 }
+	 //Req4
+		public Comparendos[] darComparendosPorLlaveSeparate(String llave)
+		{
+			Comparendos x=(Comparendos)separateChaning().get(llave);
+			int posicionArreglo=separateChaning().obtenerPosicionArreglo();
+			Comparendos[] res=separateChaning().darComparendosPorLlave(posicionArreglo,llave);
+			return res;
+		}
+		public int tamanoRealRes()
+		{
+			return separateChaning().tamanoRealArreglo();
+		}
+
 }
 	

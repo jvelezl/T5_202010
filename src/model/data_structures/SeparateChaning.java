@@ -1,6 +1,11 @@
 package model.data_structures;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+
+import sun.print.resources.serviceui;
 
 //Esta clase se creó a partir del libro algorithms 
 
@@ -10,9 +15,11 @@ public class SeparateChaning <K, V>
 	public final static int TAMANO_INICIAL=4;
 	private int N;
 	private int M;
+	private int posicionArreglo;
 	private int numeroResize=0;
+	public int tamanoRealRes=0;
 	public final static double FACTOR_DE_CARGA_MAXIMO=5.0;
-	private SequentialSearch<K,V>[] st;
+	public SequentialSearch<K,V>[] st;
 
 
 	public SeparateChaning()
@@ -39,7 +46,9 @@ public class SeparateChaning <K, V>
 
 	public V get(K llave)
 	{
-		return (V) st[hash(llave)].get(llave);
+		posicionArreglo=hash(llave);
+		V res= (V) st[posicionArreglo].get(llave);
+		return res;
 	}
 
 	public void put (K llave, V valor)
@@ -73,7 +82,7 @@ public class SeparateChaning <K, V>
 	{
 		put(llave, null);
 	}
-<<<<<<< HEAD
+
 	public double darFactorDeCarga()
 	{
 		return (double)N/M;
@@ -118,19 +127,8 @@ public class SeparateChaning <K, V>
 	public int numeroResize()
 	{
 		return numeroResize; 		
-=======
-
-	public ListaEncadenada llaves()
-	{
-		ListaEncadenada lista = new ListaEncadenada() ;
-		for (int i = 0; i < M; i++) 
-		{
-			lista.agregar(i);
-		}
-		
-		return lista;
->>>>>>> c7d5212408878dc8ee764658d34568a5545088fb
 	}
+
 	public boolean contains(K key) {
 
         if (key == null) throw new IllegalArgumentException("argument to contains() is null");
@@ -146,4 +144,42 @@ public class SeparateChaning <K, V>
 	{
 		return N;
 	}
+	public String procesarLlave(String[] x)
+	{
+		String fecha2=x[0];
+		String claseVehiculo=x[1].trim().toUpperCase();
+		if(claseVehiculo.equals("AUTOMOVIL"))
+		{
+			claseVehiculo="AUTOMÓVIL";
+		}
+		String infraccion=x[2].trim().toUpperCase();
+		SimpleDateFormat formato1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm");
+	 	Date nueva = null;
+	 	try {
+
+	 	nueva = formato1.parse(fecha2);
+
+	 	} catch (ParseException ex) {
+
+	 	ex.printStackTrace();
+
+	 	}
+	 	String llave=nueva+claseVehiculo+infraccion;
+	 	return llave;
+	}
+	public int obtenerPosicionArreglo()
+	{
+		return posicionArreglo;
+	}
+	public Comparendos[] darComparendosPorLlave(int pos,String key)
+	{
+		Comparendos[] res= st[pos].darComparendosConLlave(key);
+		tamanoRealRes=st[pos].tamanoRealArreglo();
+		return res;
+	}
+	public int tamanoRealArreglo()
+	{
+		return tamanoRealRes;
+	}
+	
 }

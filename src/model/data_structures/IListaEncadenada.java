@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface IListaEncadenada <T extends Comparable<T>> extends Iterable<T>{
+public interface IListaEncadenada <T extends Comparable<T>>{
 	public boolean agregar(T elemento);
 	public T buscar(T elemento);
 	public Object[] darArreglo();

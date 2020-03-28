@@ -64,20 +64,36 @@ public class Controller <T extends Comparable<T>>{
 
 				case 2:
 					Scanner lector2=new Scanner(System.in);
-					view.printMessage("--------- \nBuscar comparendo: ");
+					view.printMessage("--------- \nBuscar comparendos: ");
 					System.out.println("Introduzca la fecha (formato yyyy-MM-dd HH:mm), la clase del vehículo y  la infracción. Todos separados por comas y en ese orden.");
 					String llave=lector2.nextLine();
 					String key[]=llave.split(",");
 					String key2=modelo.llaveComparendoLinear(key);
 					Comparendos[] buscados=modelo.darComparendosPorLlaveLinear(key2);
-					for(int i=0;i<buscados.length;i++)
+					for(int i=0;i<modelo.retornarUReq2();i++)
 					{
-						System.out.println("El primer comparendo es: ObjectId: " + buscados[i].darId() + ", Fecha: " + buscados[i].darFecha()
+						System.out.println("Los comparendos son:");
+						System.out.println("Comparendo: ObjectId: " + buscados[i].darId() + ", Fecha: " + buscados[i].darFecha()
 						+ ", Infracción: "+ buscados[i].darInfraccion()+ ", Localidad: " + buscados[i].darLocalidad());
 					}
 					
 					break;
-				case 3: 
+				case 3:
+					Scanner lector3=new Scanner(System.in);
+					view.printMessage("--------- \nBuscar comparendos: ");
+					System.out.println("Introduzca la fecha (formato yyyy-MM-dd HH:mm), la clase del vehículo y  la infracción. Todos separados por comas y en ese orden.");
+					String llave2=lector3.nextLine();
+					String key3[]=llave2.split(",");
+					String key4=modelo.llaveComparendoChaining(key3);
+					Comparendos[] buscado=modelo.darComparendosPorLlaveSeparate(key4);
+					for(int i=0;i<modelo.tamanoRealRes();i++)
+					{
+						System.out.println("Los comparendos son:");
+						System.out.println("Comparendo: ObjectId: " + buscado[i].darId() + ", Fecha: " + buscado[i].darFecha()
+						+ ", Infracción: "+ buscado[i].darInfraccion()+ ", Localidad: " + buscado[i].darLocalidad());
+					}
+					break;
+				case 4: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

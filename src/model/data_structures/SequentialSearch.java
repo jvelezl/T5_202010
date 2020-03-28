@@ -6,7 +6,8 @@ public class SequentialSearch <K, V>
 
 {
 	private Node primero;
-
+	private int tamano;
+	private int tamanoReal=0;
 	private class Node 
 	{
 		K llave;
@@ -31,7 +32,7 @@ public class SequentialSearch <K, V>
 			}
 		}
 		return null;
-
+		
 	}
 
 	public void put( K llave, V valor)
@@ -51,8 +52,10 @@ public class SequentialSearch <K, V>
 				x.valor = valor;
 				return;
 			}
+			
 	}
 		primero = new Node(llave, valor, primero);
+		tamano++;
 	}
 	public Iterable<K> llaves()  {
 
@@ -94,4 +97,30 @@ public class SequentialSearch <K, V>
 
 	        return get(key) != null;
 	  }
+	  public int darTamano()
+	  {
+		  return tamano;
+	  }
+	  public Comparendos[] darComparendosConLlave(String key)
+		{
+			Comparendos[] comparendos=new Comparendos[tamano];
+			for(Node x=primero;x!=null;x=x.siguiente)
+			{
+				if(x!=null)
+				{
+					if(x.llave.equals(key))
+					{
+						comparendos[tamanoReal]=(Comparendos)x.valor;
+						tamanoReal++;
+					}	
+				}
+				
+			}
+			return comparendos;
+		}
+	  public int tamanoRealArreglo()
+	  {
+		  return tamanoReal;
+	  }
+	  
 }
